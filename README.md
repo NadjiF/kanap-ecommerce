@@ -1,15 +1,61 @@
-# Kanap #
+# Kanap — Site e-commerce de canapés
 
-This is the front end and back end server for Project 5 of the Web Developer path.
+Site e-commerce fictif permettant de consulter un catalogue de canapés,
+d'en ajouter au panier, et de passer commande via un formulaire.
 
-### Back end Prerequisites ###
+Base pédagogique issue du **Projet 5 — Développeur Web OpenClassrooms**,
+entièrement refactorée et modernisée pour servir de projet vitrine.
 
-You will need to have Node and `npm` installed locally on your machine.
+---
 
-### Back end Installation ###
+## 🚀 Démo locale rapide
 
-Clone this repo. From the "back" folder of the project, run `npm install`. You 
-can then run the server with `node server`. 
-The server should run on `localhost` with default port `3000`. If the
-server runs on another port for any reason, this is printed to the
-console when the server starts, e.g. `Listening on port 3001`.
+```bash
+# Backend
+cd back
+npm install
+npm start
+# → API disponible sur http://localhost:3000
+
+# Frontend (dans un autre terminal)
+# Ouvrir index.html à la racine du projet avec Live Server
+# → Site disponible sur http://127.0.0.1:5500 (ou port Live Server)
+```
+
+---
+
+## ✨ Fonctionnalités
+
+- **Catalogue** : affichage dynamique de 8 produits via API REST
+- **Fiche produit** : sélection de couleur et quantité, ajout au panier
+- **Panier** : stockage persistant (localStorage), modification des quantités, suppression d'items, calcul du total
+- **Commande** : validation du formulaire (prénom, nom, adresse, ville, email) avec regex, envoi au backend, redirection vers page de confirmation
+- **Accessibilité** : labels, aria-attributes, autocomplete sur les champs du formulaire
+- **Gestion d'erreur** : états de chargement et d'erreur affichés à l'utilisateur, pas de crash silencieux
+
+---
+
+## 🛠️ Stack technique
+
+**Front-end**
+
+- HTML5 / CSS3
+- JavaScript ES2022 (vanilla, pas de framework)
+- Fetch API
+- LocalStorage API
+
+**Back-end**
+
+- Node.js
+- Express 4
+- Helmet (sécurité HTTP)
+- CORS
+- UUID v11
+
+**Outils**
+
+- Git / GitHub
+
+---
+
+## 📁 Architecture

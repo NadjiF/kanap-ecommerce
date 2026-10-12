@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="fr">
   <head>
-    <title>Kanap</title>
-
     <meta charset="utf-8">
-    <meta name="description" content="Plateforme incroyable de e-commerce">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>Kanap — Canapés design pour tous les intérieurs</title>
+    <meta name="description" content="Boutique en ligne Kanap : découvrez notre gamme de canapés design, confortables et accessibles. Livraison partout en France.">
+
+    <!-- Open Graph (partage réseaux sociaux) -->
+    <meta property="og:title" content="Kanap — Canapés design">
+    <meta property="og:description" content="Boutique en ligne de canapés design.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- Favicon : à ajouter dans front/images/ puis décommenter -->
+    <!-- <link rel="icon" type="image/png" href="front/images/favicon.png"> -->
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="front/css/style.css" rel="stylesheet" />
 
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Styles -->
+    <link href="front/css/style.css" rel="stylesheet">
   </head>
 
   <body>
@@ -20,26 +30,26 @@
       <div class="limitedWidthBlockContainer informations">
         <div class="limitedWidthBlock">
           <ul>
-            <li><img src="front/images/icons/phone.svg" alt="logo de téléphone" class="informations__phone">01 23 45 67 89</li>
-            <li><img src="front/images/icons/mail.svg" alt="logo d'une enveloppe" class="informations__mail">support@name.com</li>
-            <li><img src="front/images/icons/adress.svg" alt="logo d'un point de géolocalisation" class="informations__address">01 23 45 67 89</li>
+            <li><img src="front/images/icons/phone.svg" alt="" class="informations__phone">01 23 45 67 89</li>
+            <li><img src="front/images/icons/mail.svg" alt="" class="informations__mail">support@kanap.com</li>
+            <li><img src="front/images/icons/adress.svg" alt="" class="informations__address">10 quai de la Charente, 75019 Paris</li>
           </ul>
         </div>
       </div>
       <div class="limitedWidthBlockContainer menu">
         <div class="limitedWidthBlock">
-          <a href="index.html">
-            <img class="logo" src="front/images/logo.png" alt="Logo de l'entreprise">
+          <a href="index.html" aria-label="Retour à l'accueil Kanap">
+            <img class="logo" src="front/images/logo.png" alt="Logo Kanap">
           </a>
-          <nav>
+          <nav aria-label="Navigation principale">
             <ul>
-              <a href="index.html"><li>Accueil</li></a>
-              <a href="front\html\cart.html"><li>Panier</li></a>
+              <li><a href="index.html" aria-current="page">Accueil</a></li>
+              <li><a href="front/html/cart.html">Panier</a></li>
             </ul>
           </nav>
         </div>
       </div>
-      <img class="banniere" src="./front/images/banniere.PNG" alt="Baniere">
+      <img class="banniere" src="front/images/banniere.PNG" alt="">
     </header>
 
     <main class="limitedWidthBlockContainer">
@@ -48,41 +58,36 @@
           <h1>Nos produits</h1>
           <h2>Une gamme d'articles exclusifs</h2>
         </div>
-        <section class="items" id="items"> 
-<!--           <a href="./product.html?id=42">
-            <article>
-              <img src=".../product01.jpg" alt="Lorem ipsum dolor sit amet, Kanap name1">
-              <h3 class="productName">Kanap name1</h3>
-              <p class="productDescription">Dis enim malesuada risus sapien gravida nulla nisl arcu. Dis enim malesuada risus sapien gravida nulla nisl arcu.</p>
-            </article>
-          </a> -->
+        <section class="items" id="items" aria-live="polite">
+          <!-- Produits injectés par script.js -->
         </section>
       </div>
     </main>
-    
+
     <footer>
       <div class="limitedWidthBlockContainer footerMain">
         <div class="limitedWidthBlock">
           <div>
-            <img class="logo" src="front/images/logo.png" alt="Logo de l'entreprise">
+            <img class="logo" src="front/images/logo.png" alt="Logo Kanap">
           </div>
           <div>
-            <p>10 quai de la charente <br>75019 Paris 19</p>
+            <p>10 quai de la Charente<br>75019 Paris</p>
           </div>
           <div>
             <p>Téléphone : 01 23 45 67 89</p>
           </div>
           <div>
-            <p>Email : support@name.com</p>
+            <p>Email : support@kanap.com</p>
           </div>
         </div>
       </div>
       <div class="limitedWidthBlockContainer footerSecondary">
         <div class="limitedWidthBlock">
-          <p>© Copyright 2021 - 2042 | Openclassrooms by Openclassrooms | All Rights Reserved | Powered by <3</p>
+          <p>© Kanap — Projet pédagogique de Nadji Fali</p>
         </div>
       </div>
     </footer>
-  <script src="front/js/script.js"></script>
+
+    <script src="front/js/script.js"></script>
   </body>
 </html>
