@@ -1,92 +1,83 @@
-const uuid = require('uuid/v1');
-const Product = require('../models/Product');
+const { v4: uuidv4 } = require("uuid");
+const Product = require("../models/Product");
 
-exports.getAllProducts = (req, res, next) => {
-  Product.find().then(
-    (products) => {
-      const mappedProducts = products.map((product) => {
-        product.imageUrl = req.protocol + '://' + req.get('host') + '/images/' + product.imageUrl;
-        return product;
-      });
-      res.status(200).json(mappedProducts);
-    }
-  ).catch(
-    () => {
-      res.status(500).send(new Error('Database error!'));
-    }
-  );
-};
+// Petite utilité : construit l'URL complète de l'image à partir du nom de fichier
+const buildImageUrl = (req, filename) =>
+  `${req.protocol}://${req.get("host")}/images/${filename}`;
 
-exports.getOneProduct = (req, res, next) => {
-  Product.findById(req.params.id).then(
-    (product) => {
-      if (!product) {
-        return res.status(404).send(new Error('Product not found!'));
-      }
-      product.imageUrl = req.protocol + '://' + req.get('host') + '/images/' + product.imageUrl;
-      res.status(200).json(product);
-    }
-  ).catch(
-    () => {
-      res.status(500).send(new Error('Database error!'));
-    }
-  )
-};
-
-/**
- *
- * Expects request to contain:
- * contact: {
- *   firstName: string,
- *   lastName: string,
- *   address: string,
- *   city: string,
- *   email: string
- * }
- * products: [string] <-- array of product _id
- *
- */
-exports.orderProducts = (req, res, next) => {
-  if (!req.body.contact ||
-      !req.body.contact.firstName ||
-      !req.body.contact.lastName ||
-      !req.body.contact.address ||
-      !req.body.contact.city ||
-      !req.body.contact.email ||
-      !req.body.products) {
-    return res.status(400).send(new Error('Bad request!'));
+// GET /api/products
+exports.getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    const mapped = products.map((product) => ({
+      ...product,
+      imageUrl: buildImageUrl(req, product.imageUrl),
+    }));
+    res.status(200).json(mapped);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur serveur lors de la récupération des produits" });
   }
-  let queries = [];
-  for (let productId of req.body.products) {
-    const queryPromise = new Promise((resolve, reject) => {
-      Product.findById(productId).then(
-        (product) => {
-          if (!product) {
-            reject('Product not found: ' + productId);
-          }
-          product.imageUrl = req.protocol + '://' + req.get('host') + '/images/' + product.imageUrl;
-          resolve(product);
+};
+
+// GET /api/products/:id
+exports.getOneProduct = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ error: "Produit non trouvé" });
+    }
+    product.imageUrl = buildImageUrl(req, product.imageUrl);
+    res.status(200).json(product);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur serveur lors de la récupération du produit" });
+  }
+};
+
+// POST /api/products/order
+exports.orderProducts = async (req, res) => {
+  try {
+    const { contact, products: productIds } = req.body;
+
+    // Validation : contact complet + liste de produits non vide
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "address",
+      "city",
+      "email",
+    ];
+    const contactValid = contact && requiredFields.every((f) => contact[f]);
+    const productsValid = Array.isArray(productIds) && productIds.length > 0;
+
+    if (!contactValid || !productsValid) {
+      return res
+        .status(400)
+        .json({ error: "Requête invalide : contact ou produits manquants" });
+    }
+
+    // Récupération parallèle de tous les produits
+    const products = await Promise.all(
+      productIds.map(async (id) => {
+        const product = await Product.findById(id);
+        if (!product) {
+          throw new Error(`Produit non trouvé : ${id}`);
         }
-      ).catch(
-        () => {
-          reject('Database error!');
-        }
-      )
+        return { ...product, imageUrl: buildImageUrl(req, product.imageUrl) };
+      }),
+    );
+
+    res.status(201).json({
+      contact,
+      products,
+      orderId: uuidv4(),
     });
-    queries.push(queryPromise);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: error.message || "Erreur serveur lors de la commande" });
   }
-  Promise.all(queries).then(
-    (products) => {
-      const orderId = uuid();
-      return res.status(201).json({
-        contact: req.body.contact,
-        products: products,
-        orderId: orderId
-      })
-    }
-  ).catch(
-    (error) => {
-      return res.status(500).json(new Error(error));
-    }
-  );
 };
